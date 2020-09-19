@@ -27,6 +27,7 @@ extern s64 PSXCLK;	/* 36.864 Mhz */
 #include "R5900.h"
 #include "Hw.h"
 #include "Dmac.h"
+#include "Gamepad.h"
 
 #include "SaveState.h"
 #include "DebugTools/Debug.h"

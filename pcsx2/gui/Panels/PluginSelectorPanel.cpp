@@ -701,7 +701,7 @@ void Panels::PluginSelectorPanel::OnEnumComplete( wxCommandEvent& evt )
 				else if( index_sse2 >= 0 ) m_ComponentBoxes->Get(pid).SetSelection( index_sse2 );
 				else m_ComponentBoxes->Get(pid).SetSelection( 0 );
 			}
-			else if (pid == PluginId_PAD)
+			/*else if (pid == PluginId_PAD)
 			{
 				int count = (int)m_ComponentBoxes->Get(pid).GetCount();
 
@@ -726,10 +726,6 @@ void Panels::PluginSelectorPanel::OnEnumComplete( wxCommandEvent& evt )
 				#ifdef _WIN32
 					if (index_lilypad >= 0)
 						m_ComponentBoxes->Get(pid).SetSelection(index_lilypad);
-					/* else if (index_onepad >= 0)
-						m_ComponentBoxes->Get(pid).SetSelection(index_onepad);
-					else if (index_onepad_legacy >= 0)
-						m_ComponentBoxes->Get(pid).SetSelection(index_onepad_legacy); */
 					else
 						m_ComponentBoxes->Get(pid).SetSelection(0);
 				#else
@@ -743,7 +739,7 @@ void Panels::PluginSelectorPanel::OnEnumComplete( wxCommandEvent& evt )
 						m_ComponentBoxes->Get(pid).SetSelection(0);
 				#endif
 			}
-			else
+			else*/
 				m_ComponentBoxes->Get(pid).SetSelection( 0 );
 
 			m_ComponentBoxes->GetConfigButton(pid).Enable( !CorePlugins.AreLoaded() );

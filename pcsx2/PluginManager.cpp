@@ -27,6 +27,7 @@
 
 #include "svnrev.h"
 #include "ConsoleLogger.h"
+#include "Gamepad.h"
 
 SysPluginBindings SysPlugins;
 
@@ -80,7 +81,7 @@ bool SysPluginBindings::McdReIndex( uint port, uint slot, const wxString& filter
 const PluginInfo tbl_PluginInfo[] =
 {
 	{ "GS",		PluginId_GS,	PS2E_LT_GS,		PS2E_GS_VERSION		},
-	{ "PAD",	PluginId_PAD,	PS2E_LT_PAD,	PS2E_PAD_VERSION	},
+	/*{ "PAD",	PluginId_PAD,	PS2E_LT_PAD,	PS2E_PAD_VERSION	},*/
 	{ "SPU2",	PluginId_SPU2,	PS2E_LT_SPU2,	PS2E_SPU2_VERSION	},
 	{ "USB",	PluginId_USB,	PS2E_LT_USB,	PS2E_USB_VERSION	},
 	{ "FW",		PluginId_FW,	PS2E_LT_FW,		PS2E_FW_VERSION		},
@@ -260,7 +261,7 @@ static void CALLBACK GS_Legacy_GSreadFIFO2(u64* pMem, int qwc) {
 }
 
 // PAD
-#ifndef BUILTIN_PAD_PLUGIN
+/*#ifndef BUILTIN_PAD_PLUGIN
 _PADinit           PADinit;
 _PADopen           PADopen;
 _PADstartPoll      PADstartPoll;
@@ -271,7 +272,7 @@ _PADkeyEvent       PADkeyEvent;
 _PADsetSlot        PADsetSlot;
 _PADqueryMtap      PADqueryMtap;
 _PADWriteEvent	   PADWriteEvent;
-#endif
+#endif*/
 
 static void PAD_update( u32 padslot ) { }
 
@@ -419,7 +420,7 @@ static const LegacyApi_OptMethod s_MethMessOpt_GS[] =
 // ----------------------------------------------------------------------------
 //  PAD Mess!
 // ----------------------------------------------------------------------------
-static s32 CALLBACK PAD_queryMtap( u8 slot ) { return 0; }
+/*static s32 CALLBACK PAD_queryMtap( u8 slot ) { return 0; }
 static s32 CALLBACK PAD_setSlot(u8 port, u8 slot) { return 0; }
 
 static const LegacyApi_ReqMethod s_MethMessReq_PAD[] =
@@ -443,7 +444,7 @@ static const LegacyApi_OptMethod s_MethMessOpt_PAD[] =
 	{	"PADupdate",		(vMeth**)&PADupdate },
 	{   "PADWriteEvent",	(vMeth**)&PADWriteEvent },
 	{ NULL },
-};
+};*/
 
 // ----------------------------------------------------------------------------
 //  SPU2 Mess!
@@ -555,7 +556,7 @@ static const LegacyApi_OptMethod s_MethMessOpt_FW[] =
 static const LegacyApi_ReqMethod* const s_MethMessReq[] =
 {
 	s_MethMessReq_GS,
-	s_MethMessReq_PAD,
+	/*s_MethMessReq_PAD,*/
 	s_MethMessReq_SPU2,
 	s_MethMessReq_USB,
 	s_MethMessReq_FW,
@@ -565,7 +566,7 @@ static const LegacyApi_ReqMethod* const s_MethMessReq[] =
 static const LegacyApi_OptMethod* const s_MethMessOpt[] =
 {
 	s_MethMessOpt_GS,
-	s_MethMessOpt_PAD,
+	/*s_MethMessOpt_PAD,*/
 	s_MethMessOpt_SPU2,
 	s_MethMessOpt_USB,
 	s_MethMessOpt_FW,
@@ -984,8 +985,8 @@ void SysCorePlugins::Load( const wxString (&folders)[PluginId_Count] )
 	indent.LeaveScope();
 
 	// Hack for PAD's stupid parameter passed on Init
-	PADinit = (_PADinit)m_info[PluginId_PAD]->CommonBindings.Init;
-	m_info[PluginId_PAD]->CommonBindings.Init = _hack_PADinit;
+	/*PADinit = (_PADinit)m_info[PluginId_PAD]->CommonBindings.Init;
+	m_info[PluginId_PAD]->CommonBindings.Init = _hack_PADinit;*/
 
 	Console.WriteLn( Color_StrongBlue, "Plugins loaded successfully.\n" );
 
@@ -1072,10 +1073,10 @@ bool SysCorePlugins::OpenPlugin_GS()
 	return true;
 }
 
-bool SysCorePlugins::OpenPlugin_PAD()
+/*bool SysCorePlugins::OpenPlugin_PAD()
 {
 	return !PADopen( (void*)pDsp );
-}
+}*/
 
 bool SysCorePlugins::OpenPlugin_SPU2()
 {
@@ -1141,7 +1142,7 @@ void SysCorePlugins::Open( PluginsEnum_t pid )
 	switch( pid )
 	{
 		case PluginId_GS:	result = OpenPlugin_GS();	break;
-		case PluginId_PAD:	result = OpenPlugin_PAD();	break;
+		/*case PluginId_PAD:	result = OpenPlugin_PAD();	break;*/
 		case PluginId_SPU2:	result = OpenPlugin_SPU2();	break;
 		case PluginId_USB:	result = OpenPlugin_USB();	break;
 		case PluginId_FW:	result = OpenPlugin_FW();	break;
@@ -1207,15 +1208,15 @@ void SysCorePlugins::ClosePlugin_GS()
 		_generalclose( PluginId_GS );
 	else
 	{
-		if( !GSopen2 ) Close( PluginId_PAD );
+		/*if( !GSopen2 ) Close( PluginId_PAD );*/
 		GetMTGS().Suspend();
 	}
 }
 
-void SysCorePlugins::ClosePlugin_PAD()
+/*void SysCorePlugins::ClosePlugin_PAD()
 {
 	_generalclose( PluginId_PAD );
-}
+}*/
 
 void SysCorePlugins::ClosePlugin_SPU2()
 {
@@ -1255,7 +1256,7 @@ void SysCorePlugins::Close( PluginsEnum_t pid )
 	switch( pid )
 	{
 		case PluginId_GS:	ClosePlugin_GS();	break;
-		case PluginId_PAD:	ClosePlugin_PAD();	break;
+		/*case PluginId_PAD:	ClosePlugin_PAD();	break;*/
 		case PluginId_SPU2:	ClosePlugin_SPU2();	break;
 		case PluginId_USB:	ClosePlugin_USB();	break;
 		case PluginId_FW:	ClosePlugin_FW();	break;
@@ -1548,7 +1549,7 @@ bool SysCorePlugins::KeyEvent( const keyEvent& evt )
 	// The current version of PS2E doesn't support it yet, though.
 
 	const PluginInfo* pi = tbl_PluginInfo; do {
-		if( pi->id != PluginId_PAD && m_info[pi->id] )
+		if( /*pi->id != PluginId_PAD &&*/ m_info[pi->id] )
 			m_info[pi->id]->CommonBindings.KeyEvent( const_cast<keyEvent*>(&evt) );
 	} while( ++pi, pi->shortname != NULL );
 

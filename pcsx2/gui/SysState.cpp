@@ -262,7 +262,7 @@ static const std::unique_ptr<BaseSavestateEntry> SavestateEntries[] = {
 	std::unique_ptr<BaseSavestateEntry>(new SavestateEntry_VU1prog),
 
 	std::unique_ptr<BaseSavestateEntry>(new PluginSavestateEntry( PluginId_GS )),
-	std::unique_ptr<BaseSavestateEntry>(new PluginSavestateEntry( PluginId_PAD )),
+	/*std::unique_ptr<BaseSavestateEntry>(new PluginSavestateEntry( PluginId_PAD )),*/
 	std::unique_ptr<BaseSavestateEntry>(new PluginSavestateEntry( PluginId_SPU2 )),
 	std::unique_ptr<BaseSavestateEntry>(new PluginSavestateEntry( PluginId_USB )),
 	std::unique_ptr<BaseSavestateEntry>(new PluginSavestateEntry( PluginId_FW )),

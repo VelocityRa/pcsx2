@@ -22,7 +22,7 @@ class IniInterface;
 enum PluginsEnum_t
 {
 	PluginId_GS = 0,
-	PluginId_PAD,
+	/*PluginId_PAD,*/
 	PluginId_SPU2,
 	PluginId_USB,
 	PluginId_FW,

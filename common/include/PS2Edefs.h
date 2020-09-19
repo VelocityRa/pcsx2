@@ -80,7 +80,7 @@ typedef struct _keyEvent
 
 // PS2EgetLibType returns (may be OR'd)
 #define PS2E_LT_GS 0x01
-#define PS2E_LT_PAD 0x02 // -=[ OBSOLETE ]=-
+/*#define PS2E_LT_PAD 0x02 */// -=[ OBSOLETE ]=-
 #define PS2E_LT_SPU2 0x04
 #define PS2E_LT_DEV9 0x10
 #define PS2E_LT_USB 0x20
@@ -89,7 +89,7 @@ typedef struct _keyEvent
 
 // PS2EgetLibVersion2 (high 16 bits)
 #define PS2E_GS_VERSION 0x0006
-#define PS2E_PAD_VERSION 0x0002 // -=[ OBSOLETE ]=-
+/*#define PS2E_PAD_VERSION 0x0002*/ // -=[ OBSOLETE ]=-
 #define PS2E_SPU2_VERSION 0x0005
 #define PS2E_DEV9_VERSION 0x0003
 #define PS2E_USB_VERSION 0x0003
@@ -206,7 +206,7 @@ s32 CALLBACK GStest();
 
 // if this file is included with this define
 // the next api will not be skipped by the compiler
-#if defined(PADdefs) || defined(BUILTIN_PAD_PLUGIN)
+/*#if defined(PADdefs) || defined(BUILTIN_PAD_PLUGIN)
 
 // basic funcs
 
@@ -247,7 +247,7 @@ void CALLBACK PADconfigure();
 void CALLBACK PADabout();
 s32 CALLBACK PADtest();
 
-#endif
+#endif*/
 
 /* SPU2 plugin API */
 
@@ -447,7 +447,7 @@ typedef void(CALLBACK *_GSmakeSnapshot)(const char *path);
 typedef void(CALLBACK *_GSmakeSnapshot2)(const char *path, int *, int);
 
 // PAD
-typedef s32(CALLBACK *_PADinit)(u32 flags);
+/*typedef s32(CALLBACK *_PADinit)(u32 flags);
 typedef s32(CALLBACK *_PADopen)(void *pDsp);
 typedef u8(CALLBACK *_PADstartPoll)(int pad);
 typedef u8(CALLBACK *_PADpoll)(u8 value);
@@ -457,7 +457,7 @@ typedef keyEvent *(CALLBACK *_PADkeyEvent)();
 typedef void(CALLBACK *_PADgsDriverInfo)(GSdriverInfo *info);
 typedef s32(CALLBACK *_PADsetSlot)(u8 port, u8 slot);
 typedef s32(CALLBACK *_PADqueryMtap)(u8 port);
-typedef void(CALLBACK *_PADWriteEvent)(keyEvent &evt);
+typedef void(CALLBACK *_PADWriteEvent)(keyEvent &evt);*/
 
 // SPU2
 typedef s32(CALLBACK *_SPU2open)(void *pDsp);
@@ -555,7 +555,7 @@ extern _GSwriteCSR GSwriteCSR;
 #endif
 
 // PAD
-#ifndef BUILTIN_PAD_PLUGIN
+/*#ifndef BUILTIN_PAD_PLUGIN
 extern _PADopen PADopen;
 extern _PADstartPoll PADstartPoll;
 extern _PADpoll PADpoll;
@@ -566,7 +566,7 @@ extern _PADgsDriverInfo PADgsDriverInfo;
 extern _PADsetSlot PADsetSlot;
 extern _PADqueryMtap PADqueryMtap;
 extern _PADWriteEvent PADWriteEvent;
-#endif
+#endif*/
 
 // SPU2
 #ifndef BUILTIN_SPU2_PLUGIN

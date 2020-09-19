@@ -54,6 +54,7 @@ set(pcsx2Sources
 	COP2.cpp
 	Counters.cpp
 	GameDatabase.cpp
+	Gamepad.cpp
 	Dump.cpp
 	Elfheader.cpp
 	FiFo.cpp
@@ -134,6 +135,7 @@ set(pcsx2Headers
 	Dump.h
 	GameDatabase.h
 	Elfheader.h
+	Gamepad.h
 	Gif.h
 	Gif_Unit.h
 	GS.h

@@ -173,6 +173,7 @@
     <ClCompile Include="..\..\DebugTools\MipsStackWalk.cpp" />
     <ClCompile Include="..\..\DebugTools\SymbolMap.cpp" />
     <ClCompile Include="..\..\GameDatabase.cpp" />
+    <ClCompile Include="..\..\Gamepad.cpp" />
     <ClCompile Include="..\..\Gif_Logger.cpp" />
     <ClCompile Include="..\..\Gif_Unit.cpp" />
     <ClCompile Include="..\..\gui\AppGameDatabase.cpp" />
@@ -424,6 +425,7 @@
     <ClInclude Include="..\..\DebugTools\MipsStackWalk.h" />
     <ClInclude Include="..\..\DebugTools\SymbolMap.h" />
     <ClInclude Include="..\..\GameDatabase.h" />
+    <ClInclude Include="..\..\Gamepad.h" />
     <ClInclude Include="..\..\Gif_Unit.h" />
     <ClInclude Include="..\..\gui\AppGameDatabase.h" />
     <ClInclude Include="..\..\gui\DriveList.h" />

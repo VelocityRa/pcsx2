@@ -177,7 +177,7 @@ extern "C" {
 enum PS2E_ComponentTypes {
     PS2E_TYPE_GS = 0,
     PS2E_TYPE_PAD,
-    PS2E_TYPE_SPU2,
+    /*PS2E_TYPE_SPU2,*/
     PS2E_TYPE_DEV9,
     PS2E_TYPE_USB,
     PS2E_TYPE_FW,
@@ -188,7 +188,7 @@ enum PS2E_ComponentTypes {
 enum PluginLibVersion {
     PS2E_VER_GS = 0x1000,
     PS2E_VER_PAD = 0x1000,
-    PS2E_VER_SPU2 = 0x1000,
+    /*PS2E_VER_SPU2 = 0x1000,*/
     PS2E_VER_DEV9 = 0x1000,
     PS2E_VER_USB = 0x1000,
     PS2E_VER_FW = 0x1000,
@@ -1156,87 +1156,6 @@ typedef struct _PS2E_KeyEvent
     uint flags;
 
 } PS2E_KeyEvent;
-
-
-// --------------------------------------------------------------------------------------
-//  PS2E_ComponentAPI_Pad
-// --------------------------------------------------------------------------------------
-// Thread Safety:
-//  * Thread affinity is not guaranteed.  Even PadKeyEvent may be called from a thread not
-//    belonging to the active window (the window where the GA is output).  Other calls may
-//    be made from either the main emu thread or an EE/IOP/GS child thread (if the emulator
-//    uses them).
-//
-typedef struct _PS2E_ComponentAPI_Pad
-{
-    // Base Component API (inherited structure)
-    struct _PS2E_ComponentAPI Base;
-
-    // PadIsPresent
-    // Called by the emulator to detect the availability of a pad.  This function will
-    // be called frequently -- essentially whenever the SIO port for the pad has its
-    // status polled - so its overhead should be minimal when possible.
-    //
-    // A plugin should behave reasonably when a pad that's not plugged in is polled.
-    //
-    // Returns:
-    //   False if the card/pad is not available, or True if it is available.
-    //
-    BOOL(PS2E_CALLBACK *PadIsPresent)
-    (PS2E_THISPTR thisptr, uint port, uint slot);
-
-    // PadStartPoll
-    // Called by the emulator to start polling the specified pad.
-    //
-    // Returns:
-    //   First byte in response to the poll (Typically 0xff).
-    //
-    // Threading:
-    //   Called from the EEcore thread.  The emulator performs no locking of its own, so
-    //   calls to this may occur concurrently with calls to PadUpdate.
-    //
-    u8(PS2E_CALLBACK *PadStartPoll)(PS2E_THISPTR thisptr, uint port, uint slot);
-
-    // PadPoll
-    // Continues polling the specified pad, sending the given value.
-    //
-    // Returns:
-    //   Next byte in response to the poll.
-    //
-    // Threading:
-    //   Called from the EEcore thread.  The emulator performs no locking of its own, so
-    //   calls to this may occur concurrently with calls to PadUpdate.
-    //
-    u8(PS2E_CALLBACK *PadPoll)(PS2E_THISPTR thisptr, u8 value);
-
-    // PadKeyEvent
-    // Called by the emulator in the gui thread to check for keys being pressed or released.
-    //
-    // Returns:
-    //   PS2E_KeyEvent:  Key being pressed or released.  Should stay valid until next call to
-    //                   PadKeyEvent or plugin is closed with EmuClose.
-    //
-    // Threading:
-    //   May be called from any thread.  The emulator performs no locking of its own, so
-    //   calls to this may occur concurrently with calls to PadUpdate.
-    //
-    PS2E_KeyEvent *(PS2E_CALLBACK *PadGetKeyEvent)(PS2E_THISPTR thisptr);
-
-    // PadUpdate
-    // This callback is issued from the thread that owns the GSwindow, at roughly 50/60hz,
-    // allowing the Pad plugin to use it for update logic that expects thread affinity with
-    // the GSwindow.
-    //
-    // Threading:
-    //   Called from the same thread that owns the GSwindow (typically either a GUI thread
-    //   or an MTGS thread). The emulator performs no locking of its own, so calls to this
-    //   may occur concurrently with calls to PadKeyEvent and PadPoll.
-    //
-    void(PS2E_CALLBACK *PadUpdate)(PS2E_THISPTR thisptr);
-
-    void *reserved[8];
-
-} PS2E_ComponentAPI_Pad;
 
 
 // --------------------------------------------------------------------------------------

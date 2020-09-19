@@ -716,7 +716,7 @@ void MainEmuFrame::Menu_ConfigPlugin_Click(wxCommandEvent& event)
 	ScopedCoreThreadPause paused_core(new SysExecEvent_SaveSinglePlugin(pid));
 
 #ifndef DISABLE_RECORDING
-	if (pid == PluginId_PAD)
+	/*if (pid == PluginId_PAD)
 	{
 		// The recording features involve pausing emulation, and can be resumed ideally via key-bindings.
 		//
@@ -735,7 +735,7 @@ void MainEmuFrame::Menu_ConfigPlugin_Click(wxCommandEvent& event)
 		else
 			GetCorePlugins().Configure(pid);
 	}
-	else
+	else*/
 		GetCorePlugins().Configure(pid);
 #else
 	GetCorePlugins().Configure(pid);

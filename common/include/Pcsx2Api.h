@@ -60,7 +60,7 @@ PS2EpassIniPath(const char *path);
 // PS2EgetLibType returns (may be OR'd)
 enum {
     PS2E_LT_GS = 0x01,
-    PS2E_LT_PAD = 0x02, // -=[ OBSOLETE ]=-
+    /*PS2E_LT_PAD = 0x02,*/ // -=[ OBSOLETE ]=-
     PS2E_LT_SPU2 = 0x04,
     PS2E_LT_CDVD = 0x08,
     PS2E_LT_DEV9 = 0x10,
@@ -72,7 +72,7 @@ enum {
 // PS2EgetLibVersion2 (high 16 bits)
 enum {
     PS2E_GS_VERSION = 0x0006,
-    PS2E_PAD_VERSION = 0x0002, // -=[ OBSOLETE ]=-
+    /*PS2E_PAD_VERSION = 0x0002,*/ // -=[ OBSOLETE ]=-
     PS2E_SPU2_VERSION = 0x0005,
     PS2E_CDVD_VERSION = 0x0005,
     PS2E_DEV9_VERSION = 0x0003,

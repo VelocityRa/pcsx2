@@ -147,7 +147,7 @@ enum MenuIdentifiers
 
 	// Plugin ID order is important.  Must match the order in tbl_PluginInfo.
 	MenuId_Config_GS,
-	MenuId_Config_PAD,
+	/*MenuId_Config_PAD,*/
 	MenuId_Config_SPU2,
 	MenuId_Config_CDVD,
 	MenuId_Config_USB,
