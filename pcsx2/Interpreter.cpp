@@ -206,10 +206,16 @@ static void dump_trace() {
 	fclose(fp);
 }
 
-volatile bool g_dump_trace = false;
+volatile bool g_trace_dump = false;
+volatile bool g_trace_is_capturing = false;
 
-static void trace_after_pc() {
-	instr_trace.insert(_PC_+4);
+static inline void trace_addr(u32 addr) {
+	if (g_trace_is_capturing)
+		instr_trace.insert(addr);
+}
+
+static inline void trace_after_pc() {
+	trace_addr(_PC_ + 4);
 }
 
 #endif
@@ -218,7 +224,7 @@ static __fi void _doBranch_shared(u32 tar)
 {
 #if ENABLE_TRACING
 	instr_trace.insert(tar);
-	if (g_dump_trace)
+	if (g_trace_dump)
 		dump_trace();
 #endif
 
