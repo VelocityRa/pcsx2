@@ -26,6 +26,8 @@
 #include "../DebugTools/Breakpoints.h"
 
 #include <float.h>
+#include <set>
+//#include <unordered_set>
 
 using namespace R5900;		// for OPCODE and OpcodeImpl
 
@@ -187,8 +189,39 @@ static void execI()
 	opcode.interpret();
 }
 
+// todo: could experiment with writing to std::vector, flushing to file every so often
+//       then on preprocess we can deduplicate
+
+#define ENABLE_TRACING 1
+
+#if ENABLE_TRACING
+std::set<u32> instr_trace;
+
+static void dump_trace() {
+	auto fp = fopen("pcsx2_trace.bin", "wb");
+
+	for (auto i:instr_trace)
+		fwrite(&i, 4, 1, fp);
+
+	fclose(fp);
+}
+
+volatile bool g_dump_trace = false;
+
+static void trace_after_pc() {
+	instr_trace.insert(_PC_+4);
+}
+
+#endif
+
 static __fi void _doBranch_shared(u32 tar)
 {
+#if ENABLE_TRACING
+	instr_trace.insert(tar);
+	if (g_dump_trace)
+		dump_trace();
+#endif
+
 	branch2 = cpuRegs.branch = 1;
 	execI();
 
@@ -272,16 +305,24 @@ void BEQ()  // Branch if Rs == Rt
 {
 	if (cpuRegs.GPR.r[_Rs_].SD[0] == cpuRegs.GPR.r[_Rt_].SD[0])
 		doBranch(_BranchTarget_);
-	else
+	else {
 		intEventTest();
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
+	}
 }
 
 void BNE()  // Branch if Rs != Rt
 {
 	if (cpuRegs.GPR.r[_Rs_].SD[0] != cpuRegs.GPR.r[_Rt_].SD[0])
 		doBranch(_BranchTarget_);
-	else
+	else {
 		intEventTest();
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
+	}
 }
 
 /*********************************************************
@@ -294,6 +335,10 @@ void BGEZ()    // Branch if Rs >= 0
 	if(cpuRegs.GPR.r[_Rs_].SD[0] >= 0)
 	{
 		doBranch(_BranchTarget_);
+	} else {
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 	}
 }
 
@@ -303,6 +348,10 @@ void BGEZAL() // Branch if Rs >= 0 and link
 	if (cpuRegs.GPR.r[_Rs_].SD[0] >= 0)
 	{
 		doBranch(_BranchTarget_);
+	} else {
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 	}
 }
 
@@ -311,6 +360,10 @@ void BGTZ()    // Branch if Rs >  0
 	if (cpuRegs.GPR.r[_Rs_].SD[0] > 0)
 	{
 		doBranch(_BranchTarget_);
+	} else {
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 	}
 }
 
@@ -319,6 +372,10 @@ void BLEZ()   // Branch if Rs <= 0
 	if (cpuRegs.GPR.r[_Rs_].SD[0] <= 0)
 	{
 		doBranch(_BranchTarget_);
+	} else {
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 	}
 }
 
@@ -327,6 +384,10 @@ void BLTZ()    // Branch if Rs <  0
 	if (cpuRegs.GPR.r[_Rs_].SD[0] < 0)
 	{
 		doBranch(_BranchTarget_);
+	} else {
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 	}
 }
 
@@ -336,6 +397,10 @@ void BLTZAL()  // Branch if Rs <  0 and link
 	if (cpuRegs.GPR.r[_Rs_].SD[0] < 0)
 	{
 		doBranch(_BranchTarget_);
+	} else {
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 	}
 }
 
@@ -353,6 +418,9 @@ void BEQL()    // Branch if Rs == Rt
 	}
 	else
 	{
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 		cpuRegs.pc +=4;
 		intEventTest();
 	}
@@ -366,6 +434,9 @@ void BNEL()     // Branch if Rs != Rt
 	}
 	else
 	{
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 		cpuRegs.pc +=4;
 		intEventTest();
 	}
@@ -379,6 +450,9 @@ void BLEZL()    // Branch if Rs <= 0
 	}
 	else
 	{
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 		cpuRegs.pc +=4;
 		intEventTest();
 	}
@@ -392,6 +466,9 @@ void BGTZL()     // Branch if Rs >  0
 	}
 	else
 	{
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 		cpuRegs.pc +=4;
 		intEventTest();
 	}
@@ -405,6 +482,9 @@ void BLTZL()     // Branch if Rs <  0
 	}
 	else
 	{
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 		cpuRegs.pc +=4;
 		intEventTest();
 	}
@@ -418,6 +498,9 @@ void BGEZL()     // Branch if Rs >= 0
 	}
 	else
 	{
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 		cpuRegs.pc +=4;
 		intEventTest();
 	}
@@ -432,6 +515,9 @@ void BLTZALL()   // Branch if Rs <  0 and link
 	}
 	else
 	{
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 		cpuRegs.pc +=4;
 		intEventTest();
 	}
@@ -446,6 +532,9 @@ void BGEZALL()   // Branch if Rs >= 0 and link
 	}
 	else
 	{
+#if ENABLE_TRACING
+		trace_after_pc();
+#endif
 		cpuRegs.pc +=4;
 		intEventTest();
 	}
